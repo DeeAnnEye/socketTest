@@ -13,16 +13,21 @@ app.use(express.static(path.join(__dirname,'public')))
 // connection to web socket
 io.on('connection', socket => {
 
-console.log("New WS connected....");
-
-// single client
+// single client welcome 
 socket.emit('message', 'Hello World')
 
 // all clients except the user
-socket.broadcast.emit();
+socket.broadcast.emit('message','A user joined the conversation');
 
 // all in general
-// io.emit();
+socket.on('disconnect',() => {
+    io.emit('message','A user left the conversation')
+})
+
+// submit msg to server
+socket.on('chatMsg', (msg) => {
+    io.emit('message',msg)
+})
 })
 
 // connection to port
