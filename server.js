@@ -2,6 +2,7 @@ const path = require('path')
 const http = require('http')
 const express = require('express')
 const socketio = require('socket.io')
+const formatMessage = require('./utils/messages')
 
 const app = express()
 const server = http.createServer(app)
@@ -13,20 +14,22 @@ app.use(express.static(path.join(__dirname,'public')))
 // connection to web socket
 io.on('connection', socket => {
 
+botName = 'JsBot'
+
 // single client welcome 
-socket.emit('message', 'Hello World')
+socket.emit('message', formatMessage(botName,'Hello World'))
 
 // all clients except the user
-socket.broadcast.emit('message','A user joined the conversation');
+socket.broadcast.emit('message',formatMessage(botName,'A user joined the conversation'));
 
 // all in general
 socket.on('disconnect',() => {
-    io.emit('message','A user left the conversation')
+    io.emit('message',formatMessage(botName,'A user left the conversation'))
 })
 
 // submit msg to server
 socket.on('chatMsg', (msg) => {
-    io.emit('message',msg)
+    io.emit('message',formatMessage('USER',msg))
 })
 })
 

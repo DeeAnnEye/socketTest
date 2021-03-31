@@ -24,10 +24,10 @@ function outputMessage(message){
     const div = document.createElement('div');
     div.classList.add('message');
     div.innerHTML = `<div class="msg-time" style="font-size: 24px; color: darkblue">
-   <span> 9:15pm </span>
+   ${message.username} <span>${message.time}</span>
   </div>
   <div class="msg-txt" style="color: black; font-size: 22px">
-    ${message}
+    ${message.text}
   </div>
   <br />`
 
